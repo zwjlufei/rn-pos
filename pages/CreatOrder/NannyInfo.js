@@ -1,0 +1,184 @@
+import React, {Component} from 'react';
+import {
+    Platform,
+    StyleSheet,
+    Text,
+    View,
+    TouchableWithoutFeedback,
+    Dimensions,
+    StatusBar,
+    Image,
+    TextInput,
+    ScrollView
+} from 'react-native';
+var {width,height} = Dimensions.get('window');
+import px2dp from './../tools/px2dp';
+import Header from "./../CommonModules/Header";
+import constant from './../tools/constant';
+export default class NannyInfo extends Component{
+    static navigationOptions = {
+        header: null
+    };
+    constructor(props){
+        super(props);
+        this.state = {
+
+        }
+    }
+    render(){
+        const { navigate } = this.props.navigation;
+        const info=this.props.navigation.state.params.info;
+        return(
+            <View style={{flex:1,backgroundColor: '#fcfcfc'}}>
+                <Header title={'月嫂单信息'} navigate={this.props.navigation}/>
+                <ScrollView>
+                <View style={[styles.flex_space_between,styles.item_style]}>
+                    <Text style={styles.item_title}>订单详情:</Text>
+                    <Text style={styles.item_content}>{constant[info.type]}</Text>
+                </View>
+                <View style={[styles.flex_space_between,styles.item_style]}>
+                    <Text style={styles.item_title}>上户时间:</Text>
+                    <Text style={styles.item_content}>{info.start_date}</Text>
+                </View>
+                <View style={[styles.flex_space_between,styles.item_style]}>
+                    <Text style={styles.item_title}>服务时长:</Text>
+                    <Text style={[styles.item_content,styles.blue_color]}>{info.days}天</Text>
+                </View>
+                <View style={[styles.flex_space_between,styles.item_style]}>
+                    <Text style={styles.item_title}>客户姓名:</Text>
+                    <Text style={styles.item_content}>{info.customer_name}({info.customer_phone})</Text>
+                </View>
+                <View style={[styles.flex_space_between,styles.item_style]}>
+                    <Text style={styles.item_title}>服务员工:</Text>
+                    <Text style={styles.item_content}>{info.waiter_name}({info.waiter_phone})</Text>
+                </View>
+                <View style={[styles.flex_space_between,styles.item_style]}>
+                    <Text style={styles.item_title}>特殊类型:</Text>
+                    <Text style={styles.item_content}>{constant[info.special_type]}</Text>
+                </View>
+                <View style={[styles.flex_space_between,styles.item_style]}>
+                    <Text style={styles.item_title}>服务地点:</Text>
+                    <Text style={styles.item_content}>{info.customer}</Text>
+                </View>
+                <View style={[styles.flex_space_between,styles.padding_gap]}>
+                    <Text style={{fontSize:px2dp(14)}}>您本次订单金额</Text>
+                    <View style={styles.money_wrap}>
+                        <Image
+                            source={require('./../../images/money_symbol.png')}
+                            style={{width:px2dp(30),height:px2dp(30)}}
+                        />
+                        <Text style={{fontSize:px2dp(25),color: '#64bdf9'}}>{info.amount}</Text>
+                    </View>
+                </View>
+               <View style={{flexDirection:'row',justifyContent: 'center',alignItems:'center',marginTop: px2dp(30)}}>
+                   <View style={styles.warn_symbol_wrap}>
+                       <Text style={styles.warn_symbol}>!</Text>
+                   </View>
+                   <Text style={{fontSize:px2dp(12),color:'#b0b0b0'}}>请与客户确认订单再进行支付</Text>
+               </View>
+                <TouchableWithoutFeedback onPress={()=>{this.props.navigation.goBack()}}>
+                    <View style={styles.editor_btn}>
+                        <Text style={styles.editor_btn_font}>编辑订单</Text>
+                    </View>
+                </TouchableWithoutFeedback>
+                <View style={{flexDirection:'row',justifyContent:'space-between',paddingHorizontal:px2dp(17)}}>
+                    <TouchableWithoutFeedback onPress={()=>{navigate('PayWays',{info:info,price:(info.amount*0.3).toFixed(2)})}}>
+                        <View style={styles.bottom_btn}>
+                            <Text style={styles.bottom_btn_font}>支付定金30%</Text>
+                        </View>
+                    </TouchableWithoutFeedback>
+                    <TouchableWithoutFeedback onPress={()=>{navigate('PayWays',{info:info,price:info.amount})}}>
+                        <View style={[styles.bottom_btn,styles.bottom_btn_on]}>
+                            <Text style={[styles.bottom_btn_font,styles.bottom_font_on]}>支付全款</Text>
+                        </View>
+                    </TouchableWithoutFeedback>
+                </View>
+                </ScrollView>
+            </View>
+
+        )
+    }
+}
+const styles = StyleSheet.create({
+    flex:{
+        flex:1
+    },
+    flex_space_between:{
+        flexDirection:'row',
+        justifyContent: 'space-between',
+        alignItems:'center'
+    },
+    item_title:{
+        flex:1,
+        fontSize:px2dp(14)
+    },
+    item_content:{
+        flex:2,
+        fontSize:px2dp(14)
+    },
+    item_style:{
+        paddingHorizontal: px2dp(17),
+        height:px2dp(53),
+        borderWidth: px2dp(1),
+        borderColor:'#efefef'
+    },
+    blue_color:{
+        color:'#64bdf9'
+    },
+    money_wrap:{
+        flexDirection:'row',
+        alignItems: 'center'
+    },
+    padding_gap:{
+        paddingHorizontal: px2dp(17),
+        height:px2dp(79)
+    },
+    warn_symbol_wrap:{
+        width:px2dp(15),
+        height:px2dp(15),
+        borderRadius:px2dp(15),
+        backgroundColor: '#b0b0b0',
+        marginRight: px2dp(10)
+    },
+    warn_symbol:{
+        fontSize:px2dp(12),
+        color:'#ffffff',
+        textAlign: 'center',
+        lineHeight:px2dp(15)
+    },
+    editor_btn:{
+        height:px2dp(45),
+        elevation:3,
+        backgroundColor:'#ffffff',
+        borderRadius: px2dp(10),
+        marginHorizontal: px2dp(17),
+        marginTop: px2dp(65)
+    },
+    editor_btn_font:{
+        fontSize:px2dp(16),
+        color:'#64bdf9',
+        textAlign: 'center',
+        lineHeight: px2dp(45)
+    },
+    bottom_btn:{
+        width:px2dp(158),
+        height:px2dp(43),
+        elevation:3,
+        backgroundColor:'#ffffff',
+        borderRadius:5,
+        marginTop:px2dp(25),
+        marginBottom:px2dp(25)
+    },
+    bottom_btn_font:{
+        fontSize:px2dp(16),
+        color:'#64bdf9',
+        textAlign: 'center',
+        lineHeight:px2dp(43)
+    },
+    bottom_btn_on:{
+        backgroundColor:'#64bdf9'
+    },
+    bottom_font_on:{
+        color:'#ffffff'
+    }
+});
