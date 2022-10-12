@@ -10,7 +10,7 @@
     "native-echarts": "^0.4.0",
     "prop-types": "^15.6.2",
     "react": "16.6.0-alpha.8af6728",
-    "react-native": "0.57.3",
+    "react-native": "0.70.2",
     "react-native-gesture-password": "^0.3.4",
     "react-native-modal-dropdown": "^0.6.2",
     "react-native-page-listview": "^1.2.0",
